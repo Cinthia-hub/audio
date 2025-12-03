@@ -83,9 +83,11 @@ Explicación breve de artefactos esperados
 create.py
 - Lee: micrófono, opcional label_classes.npy
 - Escribe: WAVs en pruebas_audio//, añade filas a features_test.csv
+
 segmentar_audio.py
 - Lee: comandos/back/white_noise.wav
 - Escribe: comandos/silent/silent_aug_r###.wav
+
 get_feactures_no_silent.py
 - Lee: WAVs en pruebas_audio/ (y subcarpetas por clase)
 - Escribe: features_test.csv
@@ -94,6 +96,7 @@ get_feactures_no_silent.py
 quick_train.py
 - Lee: features.csv
 - Escribe: scaler.pkl, modelo_audio.keras, label_classes.npy (y opcionalmente carpeta modelo_audio)
+
 model.py
 -Lee: features.csv
 -Escribe: scaler.pkl, modelo_audio.keras (y/o carpeta modelo_audio), label_classes.npy, classification_report_model.txt, metrics_summary_model.txt, single_report_model.png
@@ -102,12 +105,15 @@ model.py
 try_model2.py
 - Lee: features_test.csv, scaler.pkl, modelo_audio.keras, (opcional) label_classes.npy
 - Escribe: matriz_confusion_test.png, classification_report_try_model2.png
+
 save_results.py
 - Lee: features_test.csv, scaler.pkl, modelo_audio.keras, (opcional) label_classes.npy
 - Escribe: matriz_confusion_test.png, classification_report.txt, metrics_summary.txt
+
 try_model.py
 - Lee: WAV individual, scaler.pkl, modelo_audio.keras, (opcional) label_classes.npy, (opcional) features_test.csv
 - Escribe: classification_report_try_model.png (si calcula métricas globales), muestra ventanas OpenCV
+
 real_time.py
 - Lee: modelo_audio.keras, scaler.pkl
 - Escribe: ninguno (muestra ventanas y predicciones interactivas)
