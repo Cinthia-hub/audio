@@ -1,26 +1,55 @@
 import os
 import time
-import uuid
 import argparse
 import numpy as np
 import sounddevice as sd
 import soundfile as sf
 import librosa
 import csv
+import re
 
-# Configuración por defecto (coincide con get_feactures_no_silent.py)
+# Configuración por defecto
 DEFAULT_TARGET_ROOT = "pruebas_audio"
 DEFAULT_FEATURES_CSV = "features_test.csv"
 DEFAULT_CLASSES = ['down', 'go', 'left', 'stop', 'up']
 DEFAULT_SR = 16000
 DEFAULT_DURATION = 2.0  # segundos por defecto
 N_MFCC = 13
+FILENAME_PREFIX = "grabacion_prueba_"
+EXT = ".wav"
 
 def ensure_folders(classes, root):
     os.makedirs(root, exist_ok=True)
     for c in classes:
         path = os.path.join(root, c)
         os.makedirs(path, exist_ok=True)
+
+def next_filename_for_class(root, clase, prefix=FILENAME_PREFIX, ext=EXT):
+    """
+    Busca archivos existentes en root/clase/ que sigan el patrón
+    <prefix><clase><n><ext> y devuelve el siguiente nombre disponible,
+    empezando en 1.
+    Ej: grabacion_prueba_stop1.wav, grabacion_prueba_stop2.wav
+    """
+    folder = os.path.join(root, clase)
+    os.makedirs(folder, exist_ok=True)
+    pattern = re.compile(r'^' + re.escape(prefix) + re.escape(clase) + r'(\d+)' + re.escape(ext) + r'$')
+    max_n = 0
+    try:
+        for f in os.listdir(folder):
+            m = pattern.match(f)
+            if m:
+                try:
+                    n = int(m.group(1))
+                    if n > max_n:
+                        max_n = n
+                except Exception:
+                    pass
+    except FileNotFoundError:
+        max_n = 0
+    next_n = max_n + 1
+    filename = f"{prefix}{clase}{next_n}{ext}"
+    return filename
 
 def record_audio(filename, duration, sr):
     print(f"Grabando {duration:.2f} s a {sr} Hz... (habla ahora)")
@@ -108,8 +137,8 @@ def interactive_record_loop(classes, root, duration, sr, csv_path):
         if clase not in classes:
             print(f"Clase '{clase}' no reconocida. Clases válidas: {classes}")
             continue
-        # generar nombre único
-        filename = f"{clase}_{int(time.time())}_{uuid.uuid4().hex[:6]}.wav"
+        # generar nombre secuencial
+        filename = next_filename_for_class(root, clase)
         filepath = os.path.join(root, clase, filename)
         try:
             record_audio(filepath, duration=duration, sr=sr)
@@ -121,12 +150,13 @@ def interactive_record_loop(classes, root, duration, sr, csv_path):
 
 def non_interactive_batch(classes, root, duration, sr, csv_path, count_per_class):
     """
-    Graba count_per_class archivos por cada clase automáticamente.
+    Graba count_per_class archivos por cada clase automáticamente,
+    usando nombres secuenciales del tipo grabacion_prueba_<clase>1.wav, etc.
     """
     print(f"Modo batch: {count_per_class} grabaciones por clase en {root}/<clase>/")
     for c in classes:
         for i in range(count_per_class):
-            filename = f"{c}_{int(time.time())}_{uuid.uuid4().hex[:6]}.wav"
+            filename = next_filename_for_class(root, c)
             filepath = os.path.join(root, c, filename)
             try:
                 record_audio(filepath, duration=duration, sr=sr)
