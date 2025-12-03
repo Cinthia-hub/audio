@@ -1,0 +1,19 @@
+SUMMARY METRICS
+Accuracy: 0.9937
+
+Macro averages:
+  Precision (macro): 0.9937
+  Recall    (macro): 0.9937
+  F1        (macro): 0.9937
+
+Weighted averages:
+  Precision (weighted): 0.9937
+  Recall    (weighted): 0.9937
+  F1        (weighted): 0.9937
+
+Confusion matrix (counts):
+219,1,1,0,0
+2,217,1,0,0
+0,2,219,0,0
+0,0,0,221,0
+0,0,0,0,221

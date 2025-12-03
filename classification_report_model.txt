@@ -1,0 +1,14 @@
+Accuracy: 0.9937
+
+Classification report:
+              precision    recall  f1-score   support
+
+        five     0.9910    0.9910    0.9910       221
+        four     0.9864    0.9864    0.9864       220
+         one     0.9910    0.9910    0.9910       221
+       three     1.0000    1.0000    1.0000       221
+         two     1.0000    1.0000    1.0000       221
+
+    accuracy                         0.9937      1104
+   macro avg     0.9937    0.9937    0.9937      1104
+weighted avg     0.9937    0.9937    0.9937      1104

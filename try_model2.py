@@ -10,9 +10,29 @@ import os
 
 # 1. Cargar los datos de test
 CSV = "features_test.csv"
-df = pd.read_csv(CSV)
-X_test = df.drop(columns=["label"]).values.astype(np.float32)
-y_test = df["label"].values
+df = pd.read_csv(CSV, dtype=str)
+# Validación / limpieza: asegurar que exista la columna 'label'
+if "label" not in df.columns:
+    raise ValueError(f"El CSV {CSV} no contiene la columna 'label'. Columnas encontradas: {list(df.columns)}")
+# Normalizar labels
+df['label'] = df['label'].astype(str).str.strip()
+# Determinar columnas de features
+feat_cols = [c for c in df.columns if c != 'label']
+# Convertir features a numérico, forzando errores a NaN
+df[feat_cols] = df[feat_cols].apply(pd.to_numeric, errors='coerce')
+# Eliminar filas con NaN en features o labels vacíos o con caracteres de separador
+initial_len = len(df)
+df = df.dropna(subset=feat_cols)
+df = df[df['label'].str.strip() != ""]
+df = df[~df['label'].str.contains('=+')]
+dropped = initial_len - len(df)
+if dropped > 0:
+    print(f"Dropped {dropped} invalid rows from {CSV} (non-numeric features or bad labels)")
+if len(df) == 0:
+    raise ValueError(f"No valid rows left in {CSV} after cleaning")
+
+X_test = df[feat_cols].values.astype(np.float32)
+y_test = df['label'].values
 
 # 2. Cargar scaler, modelo y clases
 scaler = joblib.load("scaler.pkl")

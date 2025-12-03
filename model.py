@@ -13,11 +13,29 @@ from sklearn.metrics import accuracy_score, classification_report, precision_rec
 import os
 
 # 1. Load the dataset
-df = pd.read_csv("features_test.csv")  # Load extracted features and labels
+df = pd.read_csv("features_test.csv", dtype=str)
+# Validate presence of 'label' column
+if "label" not in df.columns:
+    raise ValueError(f"El CSV features_test.csv no contiene la columna 'label'. Columnas encontradas: {list(df.columns)}")
+# Normalize labels
+df['label'] = df['label'].astype(str).str.strip()
+# Feature columns are all except 'label'
+feat_cols = [c for c in df.columns if c != 'label']
+# Convert features to numeric, coercing errors to NaN
+df[feat_cols] = df[feat_cols].apply(pd.to_numeric, errors='coerce')
+# Drop rows with NaN in features or invalid labels (empty or containing only '=' characters)
+initial_len = len(df)
+df = df.dropna(subset=feat_cols)
+df = df[df['label'].str.strip() != ""]
+df = df[~df['label'].str.contains('=+')]
+dropped = initial_len - len(df)
+if dropped > 0:
+    print(f"Dropped {dropped} invalid rows from features_test.csv (non-numeric features or bad labels)")
+if len(df) == 0:
+    raise ValueError("No valid rows left in features_test.csv after cleaning")
 
-# 2. Separate features and labels
-X = df.drop(columns=["label"]).values.astype(np.float32)  # Features (numerical data)
-y = df["label"].values 
+X = df[feat_cols].values.astype(np.float32)  # Features (numerical data)
+y = df["label"].values
 
 # 3. Normalize the features
 scaler = StandardScaler()  # Initialize the standard scaler
