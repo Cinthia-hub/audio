@@ -78,17 +78,36 @@ Explicación breve de artefactos esperados
 - modelo_audio.keras: archivo del modelo Keras entrenado.
 - label_classes.npy: arreglo con orden de clases (útil para mapear índices a etiquetas).
 
-Descripción rápida de cada script (uso)
-- test_env.py: comprobar TF y GPUs -> python test_env.py
-- test_microfo.py: grabar y reproducir audio de prueba -> python test_microfo.py
-- create.py: grabar y extraer features por clase -> python create.py --interactive
-- segmentar_audio.py: crear segmentos de ruido aumentados -> python segmentar_audio.py
-- get_feactures_no_silent.py: extracción masiva de features -> python get_feactures_no_silent.py
-- quick_train.py: entrenamiento rápido desde features.csv -> python quick_train.py
-- model.py: entrenamiento completo y reportes -> python model.py
-- try_model.py: prueba de un WAV y (opcional) métricas globales -> python try_model.py
-- try_model2.py: evaluación completa sobre features_test.csv -> python try_model2.py
-- save_results.py: evaluación y guardado de reportes -> python save_results.py
-- real_time.py: inferencia en vivo desde micrófono -> python real_time.py
-- audio.py: visualización MFCC/RMS de un WAV -> python audio.py
-- check_model.py: listar archivos y verificar existencia de modelos -> python check_model.py
+### Descripción rápida de cada script (uso)
+#### Data creation:
+create.py
+- Lee: micrófono, opcional label_classes.npy
+- Escribe: WAVs en pruebas_audio//, añade filas a features_test.csv
+segmentar_audio.py
+- Lee: comandos/back/white_noise.wav
+- Escribe: comandos/silent/silent_aug_r###.wav
+get_feactures_no_silent.py
+- Lee: WAVs en pruebas_audio/ (y subcarpetas por clase)
+- Escribe: features_test.csv
+
+#### Training:
+quick_train.py
+- Lee: features.csv
+- Escribe: scaler.pkl, modelo_audio.keras, label_classes.npy (y opcionalmente carpeta modelo_audio)
+model.py
+-Lee: features.csv
+-Escribe: scaler.pkl, modelo_audio.keras (y/o carpeta modelo_audio), label_classes.npy, classification_report_model.txt, metrics_summary_model.txt, single_report_model.png
+
+#### Evaluation / Inference:
+try_model2.py
+- Lee: features_test.csv, scaler.pkl, modelo_audio.keras, (opcional) label_classes.npy
+- Escribe: matriz_confusion_test.png, classification_report_try_model2.png
+save_results.py
+- Lee: features_test.csv, scaler.pkl, modelo_audio.keras, (opcional) label_classes.npy
+- Escribe: matriz_confusion_test.png, classification_report.txt, metrics_summary.txt
+try_model.py
+- Lee: WAV individual, scaler.pkl, modelo_audio.keras, (opcional) label_classes.npy, (opcional) features_test.csv
+- Escribe: classification_report_try_model.png (si calcula métricas globales), muestra ventanas OpenCV
+real_time.py
+- Lee: modelo_audio.keras, scaler.pkl
+- Escribe: ninguno (muestra ventanas y predicciones interactivas)
