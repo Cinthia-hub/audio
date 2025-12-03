@@ -12,7 +12,7 @@ import pandas as pd
 # Parámetros
 FS = 16000
 N_MFCC = 13
-ARCHIVO_AUDIO = "pruebas_audio/two/222.wav"
+ARCHIVO_AUDIO = "pruebas_audio/four/4_george_2.wav"
 MODELO_PATH = "modelo_audio.keras"
 SCALER_PATH = "scaler.pkl"  # Ruta al scaler entrenado
 FEATURES_TEST_CSV = "features_test.csv"
