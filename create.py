@@ -11,7 +11,7 @@ import re
 # Configuración por defecto
 DEFAULT_TARGET_ROOT = "pruebas_audio"
 DEFAULT_FEATURES_CSV = "features_test.csv"
-DEFAULT_CLASSES = ['down', 'go', 'left', 'stop', 'up']
+DEFAULT_CLASSES = ['one', 'two', 'three', 'four', 'five']
 DEFAULT_SR = 16000
 DEFAULT_DURATION = 2.0  # segundos por defecto
 N_MFCC = 13

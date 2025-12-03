@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Cargar el archivo de audio
-audio_path = "comandos/stop/0b40aa8e_nohash_0.wav"  # Reemplaza con la ruta de tu archivo de audio
+audio_path = "comandos/four/0b40aa8e_nohash_0.wav"  # Reemplaza con la ruta de tu archivo de audio
 y, sr = librosa.load(audio_path, sr=None)  # y: señal de audio, sr: sample rate
 y, _ = librosa.effects.trim(y, top_db=25)  # Elimina silencios por debajo de -20 dB
 

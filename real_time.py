@@ -11,7 +11,7 @@ DURACION = 2  # segundos
 N_MFCC = 13
 MODELO_PATH = "modelo_audio.keras"
 SCALER_PATH = "scaler.pkl"
-ETIQUETAS = ['down', 'go', 'left', 'stop', 'up']
+ETIQUETAS = ['one', 'two', 'three', 'four', 'five']
 
 def extraer_features_desde_array(y, sr=FS):
     y, _ = librosa.effects.trim(y)
