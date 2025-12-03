@@ -13,11 +13,11 @@ from sklearn.metrics import accuracy_score, classification_report, precision_rec
 import os
 
 # 1. Load the dataset
-df = pd.read_csv("features.csv")  # Load extracted features and labels
+df = pd.read_csv("features_test.csv")  # Load extracted features and labels
 
 # 2. Separate features and labels
 X = df.drop(columns=["label"]).values.astype(np.float32)  # Features (numerical data)
-y = df["label"].values  # Labels (e.g., "up", "down", etc.)
+y = df["label"].values 
 
 # 3. Normalize the features
 scaler = StandardScaler()  # Initialize the standard scaler

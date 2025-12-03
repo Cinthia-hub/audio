@@ -12,14 +12,14 @@ import pandas as pd
 # Parámetros
 FS = 16000
 N_MFCC = 13
-ARCHIVO_AUDIO = "pruebas_audio/stop/grabacion_prueba_stop2.wav"
+ARCHIVO_AUDIO = "pruebas_audio/four/44.wav"
 MODELO_PATH = "modelo_audio.keras"
 SCALER_PATH = "scaler.pkl"  # Ruta al scaler entrenado
 FEATURES_TEST_CSV = "features_test.csv"
 LABELS_NPY = "label_classes.npy"
 
 # Etiquetas por defecto (solo si no existe label_classes.npy)
-etiquetas = ['down', 'go', 'left', 'stop', 'up']
+etiquetas = ['one', 'two', 'three', 'four', 'five']
 
 def extraer_features_desde_array(y, sr=FS):
     y, _ = librosa.effects.trim(y)
