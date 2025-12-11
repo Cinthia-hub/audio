@@ -1,4 +1,4 @@
-# Proyecto: Reconocimiento de comandos de audio (repo: Cinthia-hub/audio)
+# Proyecto: Reconocimiento de comandos de audio
 
 Este repositorio contiene scripts para:
 - Grabar audio (interactivo o batch),
